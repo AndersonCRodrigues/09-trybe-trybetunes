@@ -1,0 +1,8 @@
+.loading {
+  display: flex;
+  flex-direction: column;
+}
+
+.loading img {
+  width: 100px;
+}
