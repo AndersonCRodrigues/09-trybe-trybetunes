@@ -23,14 +23,11 @@ export default class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const TWO_SECCONDS = 2000;
     this.setState({ loading: true });
     const { history } = this.props;
     const { name } = this.state;
     createUser({ name });
-    setTimeout(() => {
-      history.push('/search');
-    }, TWO_SECCONDS);
+    history.push('/search');
   };
 
   render() {
