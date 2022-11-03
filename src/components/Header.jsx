@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getUser } from '../services/userAPI';
 import Loading from './Loading';
+import Nav from './Nav';
 
 export default class Header extends Component {
   state = {
@@ -29,7 +30,7 @@ export default class Header extends Component {
           {' '}
           {login.name}
         </p>
-        Search
+        <Nav />
       </header>
     );
   }

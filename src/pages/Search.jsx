@@ -6,6 +6,7 @@ export default class Search extends Component {
     return (
       <div data-testid="page-search">
         <Header />
+        Pesquisar
       </div>
     );
   }
