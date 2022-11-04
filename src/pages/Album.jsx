@@ -3,7 +3,7 @@ import Props from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
-import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 import Loading from '../components/Loading';
 
 const INTERVAL = 1000;
@@ -61,6 +61,17 @@ export default class Album extends Component {
       setTimeout(async () => {
         const getSong = musicas.find(({ trackId }) => +id === +trackId);
         addSong(getSong);
+        const favoriteSongs = await getFavoriteSongs();
+        this.setState({
+          loading: false,
+          favoritas: favoriteSongs,
+        });
+      }, INTERVAL);
+    } else {
+      this.setState({ loading: true });
+      setTimeout(async () => {
+        const getSong = musicas.find(({ trackId }) => +id === +trackId);
+        removeSong(getSong);
         const favoriteSongs = await getFavoriteSongs();
         this.setState({
           loading: false,
