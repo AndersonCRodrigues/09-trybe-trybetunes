@@ -33,11 +33,8 @@ export default class Profile extends Component {
               alt={ user.name }
               width="300px"
             />
-            <h4>Nome</h4>
             <p>{user.name}</p>
-            <h4>E-mail</h4>
             <p>{user.email}</p>
-            <h4>Descrição</h4>
             <p>{user.description}</p>
             <Link to="/profile/edit">Editar perfil</Link>
           </section>

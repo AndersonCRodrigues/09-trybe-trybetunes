@@ -25,11 +25,13 @@ export default class Header extends Component {
     return (
       <header data-testid="header-component">
         <h1>Header</h1>
-        <p data-testid="header-user-name">
+        <span>
           Olá,
           {' '}
+        </span>
+        <span data-testid="header-user-name">
           {login.name}
-        </p>
+        </span>
         <Nav />
       </header>
     );
