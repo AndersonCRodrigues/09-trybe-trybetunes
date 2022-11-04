@@ -3,14 +3,17 @@ import Props from 'prop-types';
 import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../components/MusicCard';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from '../components/Loading';
+
+const INTERVAL = 1000;
 
 export default class Album extends Component {
   state = {
     title: '',
     musicas: [],
     loading: false,
+    check: {},
   };
 
   async componentDidMount() {
@@ -20,14 +23,33 @@ export default class Album extends Component {
     this.setState({
       title: titulo,
       musicas: music,
-      check: {},
-    });
+    }, this.handleGetFavoriteSong);
   }
+
+  handleGetFavoriteSong = async () => {
+    const favorites = await getFavoriteSongs();
+    const { musicas } = this.state;
+
+    if (favorites.length > 0) {
+      this.setState({ loading: true });
+
+      setTimeout(() => {
+        const list = favorites.filter(({ trackId }) => trackId === musicas
+          .find((musica) => musica.trackId === trackId).trackId);
+
+        list.forEach((element) => {
+          this.setState((prev) => ({ check:
+            { ...prev.check, [element.trackId]: true } }));
+        });
+
+        this.setState({ loading: false });
+      }, INTERVAL);
+    }
+  };
 
   handleFavorite = ({ target }) => {
     const { id, checked, name } = target;
     const { musicas } = this.state;
-    const INTERVAL = 1000;
 
     this.setState((prev) => ({ check: { ...prev.check, [name]: checked } }));
 
