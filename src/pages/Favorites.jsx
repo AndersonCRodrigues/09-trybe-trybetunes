@@ -4,8 +4,6 @@ import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
 import { getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
-const INTERVAL = 1000;
-
 export default class Favorites extends Component {
   state = {
     favoritas: [],
@@ -28,22 +26,20 @@ export default class Favorites extends Component {
     }
   };
 
-  handleFavorite = ({ target }) => {
+  handleFavorite = async ({ target }) => {
     const { id, checked } = target;
     const { favoritas } = this.state;
 
     if (!checked) {
       this.setState({ loading: true });
 
-      setTimeout(async () => {
-        const getSong = favoritas.find(({ trackId }) => +id === +trackId);
-        removeSong(getSong);
-        const favoriteSongs = await getFavoriteSongs();
-        this.setState({
-          favoritas: favoriteSongs,
-          loading: false,
-        });
-      }, INTERVAL);
+      const getSong = favoritas.find(({ trackId }) => +id === +trackId);
+      removeSong(getSong);
+      const favoriteSongs = await getFavoriteSongs();
+      this.setState({
+        favoritas: favoriteSongs,
+        loading: false,
+      });
     }
   };
 
