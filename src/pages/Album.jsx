@@ -14,6 +14,7 @@ export default class Album extends Component {
     musicas: [],
     loading: false,
     check: {},
+    favoritas: [],
   };
 
   async componentDidMount() {
@@ -29,12 +30,14 @@ export default class Album extends Component {
   handleGetFavoriteSong = async () => {
     const favorites = await getFavoriteSongs();
     const { musicas } = this.state;
+    const filterFavorite = favorites.filter(({ collectionId }) => collectionId
+    === musicas[0].collectionId);
 
-    if (favorites.length > 0) {
+    if (filterFavorite.length > 0) {
       this.setState({ loading: true });
 
       setTimeout(() => {
-        const list = favorites.filter(({ trackId }) => trackId === musicas
+        const list = filterFavorite.filter(({ trackId }) => trackId === musicas
           .find((musica) => musica.trackId === trackId).trackId);
 
         list.forEach((element) => {
@@ -55,16 +58,21 @@ export default class Album extends Component {
 
     if (checked) {
       this.setState({ loading: true });
-      setTimeout(() => {
+      setTimeout(async () => {
         const getSong = musicas.find(({ trackId }) => +id === +trackId);
         addSong(getSong);
-        this.setState({ loading: false });
+        const favoriteSongs = await getFavoriteSongs();
+        this.setState({
+          loading: false,
+          favoritas: favoriteSongs,
+        });
       }, INTERVAL);
     }
   };
 
   render() {
-    const { musicas, title, loading, check } = this.state;
+    const { musicas, title, loading, check, favoritas } = this.state;
+    console.log(favoritas);
     return (
       <div data-testid="page-album">
         <Header />
